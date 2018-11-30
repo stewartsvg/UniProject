@@ -10,16 +10,20 @@ import java.io.IOException;
 //makes synchronous requests
 public class SmartContractRequest {
 
-    private final static String ganacheDefaultAddress = "http://localhost:7545";
+    private final static String ganacheDefaultAddress = "http://192.168.43.231:8545";
 
 
-    public void makeRequest() {
+    public String getClientVersion() {
+        Web3j web3 = Web3jFactory.build(new HttpService(ganacheDefaultAddress));
+        Web3ClientVersion web3ClientVersion = null;
         try {
-            Web3j web3 = Web3jFactory.build(new HttpService(ganacheDefaultAddress));
-            Web3ClientVersion web3ClientVersion = web3.web3ClientVersion().send();
-            String clientVersion = web3ClientVersion.getWeb3ClientVersion();
-        }catch(IOException ioException){
-            System.out.println(ioException);
+           web3ClientVersion = web3.web3ClientVersion().send();
+           String clientVersionString = web3ClientVersion.getWeb3ClientVersion();
+            System.out.println("Client version is: "+clientVersionString);
+            return clientVersionString;
+        }catch(IOException ioException) {
+            ioException.printStackTrace();
+            return "Error";
         }
     }
 

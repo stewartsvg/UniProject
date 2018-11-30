@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">UniProject</string>
+    <string name="runEthereumExample">Run Ethereum Example</string>
 </resources>
