@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
         //when runGetEthereumClientVersion button is pressed it will send a get request to the blockchain
         //and show the output of the Ethereum client version in ethereumOutputText
-        final Button runGetEthereumClientVersion = findViewById(R.id.ethereumExampleButton);
+        final Button runGetEthereumClientVersion = findViewById(R.id.ethereumVersionButton);
         final TextView ethereumOutputText = findViewById(R.id.ethereumOutputText);
 
         runGetEthereumClientVersion.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +65,32 @@ public class MainActivity extends AppCompatActivity {
                 }.execute();
             }
         });
+
+        //when runEthereumTransactionButton is pressed it will send the ethereumTransactionValue
+        //amount to the example transaction and execute the transaction
+        final Button runEthereumContractButton = findViewById(R.id.ethereumContractButton);
+        final TextView ethereumContractValue = findViewById(R.id.ethereumContractValue);
+
+        runEthereumContractButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AsyncTask asyncTask = new AsyncTask() {
+                    @Override
+                    protected Object doInBackground(Object[] objects) {
+                        String userName = ethereumContractValue.getText().toString();
+                        EthereumRequest ethereumRequest = new EthereumRequest();
+                        String contractMessage = ethereumRequest.addUsersToUserAddressBook(userName);
+                        return contractMessage;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Object o){
+                        ethereumOutputText.setText(o.toString());
+                    }
+                }.execute();
+            }
+        });
+
 
     }
 }

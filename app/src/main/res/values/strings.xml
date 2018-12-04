@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Ethereum Blockchain Prototype</string>
-    <string name="runEthereumExample">Run Ethereum Example</string>
-    <string name="execute_transaction">Execute Transaction</string>
+    <string name="getEthereumVersion">Get Ethereum Version</string>
+    <string name="executeTransaction">Execute Transaction</string>
 </resources>
