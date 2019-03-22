@@ -10,7 +10,7 @@
     <string name="credentials_go_here">Credentials go here</string>
     <string name="enter_wallet_address">Enter Wallet Address</string>
     <string name="error_please_ensure_no_fields_are_empty">Error: Please ensure no fields are empty.</string>
-    <string name="confirm_registration">Confirm Registration</string>
+    <string name="confirm_registration">Confirm</string>
     <string name="error_passwords_don_t_match">Error: Passwords Don\'t Match!</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="enter_password">Enter Password</string>

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@drawable/background_image_login">
 
     <TextView
         android:id="@+id/tvEmptyLoginFieldsError"
@@ -27,7 +29,7 @@
     <EditText
         android:id="@+id/etLoginPassword"
         android:layout_width="wrap_content"
-        android:layout_height="55dp"
+        android:layout_height="120dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
@@ -39,7 +41,8 @@
         android:layout_marginTop="288dp"
         android:layout_marginEnd="101dp"
         android:layout_marginRight="101dp"
-        android:layout_marginBottom="388dp"
+        android:layout_marginBottom="415dp"
+        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "
         android:ems="10"
         android:hint="@string/enter_password"
         android:inputType="textPassword" />
@@ -47,7 +50,7 @@
     <EditText
         android:id="@+id/etLoginName"
         android:layout_width="wrap_content"
-        android:layout_height="55dp"
+        android:layout_height="121dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
@@ -59,7 +62,8 @@
         android:layout_marginTop="222dp"
         android:layout_marginEnd="101dp"
         android:layout_marginRight="101dp"
-        android:layout_marginBottom="454dp"
+        android:layout_marginBottom="480dp"
+        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 "
         android:ems="10"
         android:hint="@string/enter_name"
         android:inputType="text" />
@@ -67,7 +71,7 @@
     <Button
         android:id="@+id/btnLoginButton"
         android:layout_width="wrap_content"
-        android:layout_height="61dp"
+        android:layout_height="110dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
@@ -76,16 +80,16 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="128dp"
         android:layout_marginLeft="128dp"
-        android:layout_marginTop="358dp"
+        android:layout_marginTop="443dp"
         android:layout_marginEnd="132dp"
         android:layout_marginRight="132dp"
-        android:layout_marginBottom="312dp"
+        android:layout_marginBottom="270dp"
         android:text="@string/log_in" />
 
     <Button
         android:id="@+id/btnLoginRegister"
         android:layout_width="wrap_content"
-        android:layout_height="59dp"
+        android:layout_height="103dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
@@ -94,10 +98,58 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="128dp"
         android:layout_marginLeft="128dp"
-        android:layout_marginTop="426dp"
+        android:layout_marginTop="520dp"
         android:layout_marginEnd="132dp"
         android:layout_marginRight="132dp"
-        android:layout_marginBottom="245dp"
+        android:layout_marginBottom="200dp"
         android:text="@string/register" />
+
+    <TextView
+        android:id="@+id/tvLoginTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="130dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="67dp"
+        android:layout_marginRight="67dp"
+        android:layout_marginBottom="686dp"
+        android:gravity="center"
+        android:text="Welcome to OV Chain."
+        android:textColor="@color/colorWhite"
+        android:textSize="24sp"
+        app:fontFamily="@font/oxygen_bold" />
+
+    <TextView
+        android:id="@+id/tvLoginTitle2"
+        android:layout_width="367dp"
+        android:layout_height="109dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="21dp"
+        android:layout_marginRight="21dp"
+        android:layout_marginBottom="629dp"
+        android:gravity="center"
+        android:text="The Supply Chain for Organic Vegetables"
+        android:textColor="@color/colorWhite"
+        android:textSize="16sp"
+        app:fontFamily="@font/oxygen_bold" />
+
+    <TextView
+        android:id="@+id/tvLoginTitle3"
+        android:layout_width="367dp"
+        android:layout_height="109dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="21dp"
+        android:layout_marginRight="21dp"
+        android:layout_marginBottom="544dp"
+        android:gravity="center"
+        android:text="Please Log in or Register an Address."
+        android:textColor="@color/colorWhite"
+        android:textSize="14sp"
+        app:fontFamily="@font/oxygen_bold" />
 
 </RelativeLayout>
