@@ -28,18 +28,32 @@ public class LoginActivity extends AppCompatActivity {
                 SharedPreferences sharedPreferences = getSharedPreferences("PREFS", MODE_PRIVATE);
                 String usernameString = loginName.getText().toString();
                 String passwordString = loginPassword.getText().toString();
+                TextView emptyLoginFieldsError = findViewById(R.id.tv_empty_login_fields_error);
 
+                //checks if both login fields are empty
                 if (usernameString.equals("") || passwordString.equals("")) {
-                    TextView emptyLoginFieldsError = findViewById(R.id.tvEmptyLoginFieldsError);
                     emptyLoginFieldsError.setVisibility(View.VISIBLE);
                 } else {
-                    String userDetails = sharedPreferences.getString(usernameString + passwordString + "data", "Invalid Username or Password.");
+                    //gets the data value for the key of entered username+password, if there is no
+                    //data value for this key, it is set to "Invalid Login"
+                    emptyLoginFieldsError.setVisibility(View.INVISIBLE);
+                    String userDetails = sharedPreferences.getString(usernameString + passwordString + "data", "Invalid Login");
+                    //if Invalid Login is the value stored for this key, it presents error text
+                    if(userDetails.equals("Invalid Login")){
+                        TextView invalidLoginError = findViewById(R.id.tv_invalid_login_error);
+                        invalidLoginError.setVisibility(View.VISIBLE);
+                    }else{
+                    //if the user has non-default values for their username/password key combination,
+                    //therefore they have existing data values and therefore are taken to the home page and the
+                    //credentials are set to this.
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("credentials", userDetails);
                     editor.commit();
 
                     Intent goToHomeScreen = new Intent(LoginActivity.this, HomeActivity.class);
                     startActivity(goToHomeScreen);
+                    finish();
+                    }
                 }
             }});
 

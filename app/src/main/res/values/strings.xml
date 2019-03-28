@@ -15,4 +15,8 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="enter_password">Enter Password</string>
     <string name="empty_login_fields_error">Error: Please Enter All Fields to Log In.</string>
+    <string name="invalid_login_error">Error: Invalid Login Credentials, Please try again.</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="nav_menu_button_description">Button to open navigation drawer</string>
 </resources>

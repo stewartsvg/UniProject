@@ -46,6 +46,7 @@ public class Register extends AppCompatActivity {
 
                         Intent goToLogin = new Intent(Register.this,LoginActivity.class);
                         startActivity(goToLogin);
+                        finish();
                     }else{
                        TextView passwordMatchError = findViewById(R.id.tvPasswordMatchError);
                        passwordMatchError.setVisibility(View.VISIBLE);
