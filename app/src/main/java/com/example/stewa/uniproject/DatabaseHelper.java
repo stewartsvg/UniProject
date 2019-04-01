@@ -4,8 +4,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
+
+import static android.content.ContentValues.TAG;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -40,12 +43,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(createTableStatement);
     }
 
-    public boolean addProduct(ArrayList productDetails){
+    //gets db and adds product details to content values before inserting it as one statement
+    public boolean addProductToDatabase(Product product){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues productContentValues = new ContentValues();
+        productContentValues.put(productName,product.getName());
+        productContentValues.put(productDescription,product.getDescription());
+        productContentValues.put(productWeight,product.getWeight());
+        productContentValues.put(productItemCost,product.getItemCost());
+        productContentValues.put(productStock,product.getStock());
+        productContentValues.put(productProducerName,product.getProducer());
 
-        //productContentValues.put(productName, String.valueOf);
-        return true;
+        Log.d(TAG, "addProductToDatabase: adding "+product.getName()+" to "+productTableName+" table.");
+
+        long outcomeOfInsert = db.insert(productTableName,null,productContentValues);
+
+        //will return false if insert failed
+        if(outcomeOfInsert==-1) {
+            return false;
+        }
+        else{
+            return true;
+        }
     }
-
 }
+

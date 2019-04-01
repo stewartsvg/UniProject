@@ -83,8 +83,8 @@
 
     <Button
         android:id="@+id/btnLoginButton"
-        android:layout_width="200dp"
-        android:layout_height="100dp"
+        android:layout_width="195dp"
+        android:layout_height="72dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
@@ -93,25 +93,25 @@
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="104dp"
         android:layout_marginBottom="256dp"
-        android:text="@string/log_in"
         android:background="@drawable/btn_login_style"
+        android:text="@string/log_in"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/btnLoginRegister"
-        android:layout_width="200dp"
-        android:layout_height="100dp"
+        android:layout_width="195dp"
+        android:layout_height="71dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="104dp"
-        android:layout_marginBottom="112dp"
-        android:text="@string/register"
+        android:layout_marginEnd="108dp"
+        android:layout_marginBottom="156dp"
         android:background="@drawable/btn_login_style"
+        android:text="@string/register"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

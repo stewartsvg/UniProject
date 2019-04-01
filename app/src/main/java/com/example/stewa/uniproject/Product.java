@@ -11,12 +11,12 @@ public class Product {
 
 
     public Product(String name, String description, double itemCost, int stock, double weight, String producer){
-        name = this.name;
-        description = this.description;
-        itemCost = this.itemCost;
-        stock = this.stock;
-        weight = this.weight;
-        producer = this.producer;
+        this.name = name;
+        this.description = description;
+        this.itemCost = itemCost;
+        this.stock = stock;
+        this.weight= weight;
+        this.producer = producer;
     }
 
 

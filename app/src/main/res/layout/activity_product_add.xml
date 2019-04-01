@@ -16,7 +16,40 @@
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:id="@+id/constraintLayout">
+
+            <TextView
+                android:id="@+id/tv_product_add_empty_fields_error"
+                android:layout_width="250dp"
+                android:layout_height="53dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="80dp"
+                android:layout_marginBottom="652dp"
+                android:gravity="center"
+                android:text="@string/error_please_ensure_no_fields_are_empty"
+                android:textColor="@color/colorAccent"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <ImageButton
+                android:id="@+id/btn_add_product_drawer_menu"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="348dp"
+                android:layout_marginBottom="724dp"
+                android:background="@drawable/ic_menu_white"
+                android:contentDescription="@string/nav_menu_button_description"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <TextView
                 android:id="@+id/tv_product_add_title"
@@ -25,7 +58,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
                 android:layout_marginEnd="60dp"
-                android:layout_marginBottom="688dp"
+                android:layout_marginBottom="708dp"
                 android:gravity="center"
                 android:text="Add Your New Product"
                 android:textColor="@color/colorWhite"
@@ -35,7 +68,7 @@
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <Button
-                android:id="@+id/btn_pr"
+                android:id="@+id/btn_product_add"
                 android:layout_width="359dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -58,6 +91,7 @@
                 android:ems="10"
                 android:hint="Product Name"
                 android:background="@drawable/et_background_style"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 android:inputType="text"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
@@ -81,10 +115,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="96dp"
                 android:layout_marginBottom="376dp"
+                android:background="@drawable/et_background_style"
                 android:ems="10"
                 android:hint="Product Weight (in kg)"
-                android:background="@drawable/et_background_style"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
@@ -108,10 +142,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="96dp"
                 android:layout_marginBottom="324dp"
+                android:background="@drawable/et_background_style"
                 android:ems="10"
                 android:hint="Cost per Item (in Ether)"
-                android:background="@drawable/et_background_style"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
         </android.support.constraint.ConstraintLayout>
