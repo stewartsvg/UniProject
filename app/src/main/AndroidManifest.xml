@@ -12,8 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ProductAddActivity"
-            android:screenOrientation="portrait"/>
+        <activity android:name=".OrderProductActivity"></activity>
+        <activity android:name=".ProductEditActivity" />
+        <activity android:name=".EditOrRemoveProductActivity" />
+        <activity
+            android:name=".ProductAddActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait">

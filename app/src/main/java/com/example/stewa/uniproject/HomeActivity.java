@@ -41,6 +41,8 @@ public class HomeActivity extends AppCompatActivity {
         //buttons on home screen
         Button logoutButton = (Button) findViewById(R.id.btn_home_log_out);
         Button addProductButton = (Button) findViewById(R.id.btn_home_add_product);
+        Button editOrRemoveProductButton = (Button) findViewById(R.id.btn_home_edit_remove_product);
+        Button orderProductButton = (Button) findViewById(R.id.btn_home_order_produce);
         //empties credentials and returns to login screen
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,6 +51,7 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         });
+
         //goes to add product screen
         addProductButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +60,25 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         });
+
+        //goes to edit or remove product screen
+        editOrRemoveProductButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToEditOrRemoveProductScreen();
+
+            }
+        });
+
+        //goes to order product screen
+        orderProductButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToOrderProductScreen();
+
+            }
+        });
+
 
     }
 
@@ -91,6 +113,16 @@ public class HomeActivity extends AppCompatActivity {
 
         Intent goToAddProductScreen = new Intent(HomeActivity.this, ProductAddActivity.class);
         startActivity(goToAddProductScreen);
-        finish();
+    }
+
+    private void goToEditOrRemoveProductScreen(){
+
+        Intent goToEditOrRemoveProductScreen = new Intent(HomeActivity.this, EditOrRemoveProductActivity.class);
+        startActivity(goToEditOrRemoveProductScreen);
+    }
+
+    private void goToOrderProductScreen(){
+        Intent goToOrderProductScreen = new Intent(HomeActivity.this, OrderProductActivity.class);
+        startActivity(goToOrderProductScreen);
     }
 }

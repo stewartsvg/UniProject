@@ -19,11 +19,6 @@ public class Product {
         this.producer = producer;
     }
 
-
-
-
-
-
    //getters and setters
     public String getName() {
         return name;
@@ -72,9 +67,5 @@ public class Product {
     public void setProducer(String producer) {
         this.producer = producer;
     }
-
-
-
-
 
 }

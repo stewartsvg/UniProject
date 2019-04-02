@@ -16,11 +16,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ProductAddActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
-    private TextView emptyFieldsError = findViewById(R.id.tv_product_add_empty_fields_error);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,7 @@ public class ProductAddActivity extends AppCompatActivity {
         setContentView(R.layout.activity_product_add);
 
         //opens up navigation menu by clicking on white menu icon
+
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         ImageButton navBarMenuButton = (ImageButton) findViewById(R.id.btn_add_product_drawer_menu);
         navBarMenuButton.setOnClickListener(new View.OnClickListener() {
@@ -42,7 +44,7 @@ public class ProductAddActivity extends AppCompatActivity {
         });
         SharedPreferences sharedPreferences = getSharedPreferences("PREFS", MODE_PRIVATE);
         final String currentUserCredentials = sharedPreferences.getString("credentials", null);
-
+        final TextView emptyFieldsError = findViewById(R.id.tv_product_add_empty_fields_error);
         final EditText etProductName = (EditText) findViewById(R.id.et_product_name);
         final EditText etProductDescription = (EditText) findViewById(R.id.et_product_description);
         final EditText etProductItemCost = (EditText) findViewById(R.id.et_product_item_cost);
@@ -68,8 +70,11 @@ public class ProductAddActivity extends AppCompatActivity {
                     String producer = getProducerNameFromSharedPrefs(currentUserCredentials);
                     Product newProduct = new Product(productName, productDescription, productItemCost, productStock, productWeight, producer);
                     DatabaseHelper dbhelper = new DatabaseHelper(ProductAddActivity.this);
-                    dbhelper.addProductToDatabase(newProduct);
-                    emptyForm((ViewGroup) findViewById(R.id.constraintLayout));
+
+                    if(dbhelper.addProductToDatabase(newProduct)){
+                        emptyForm((ViewGroup) findViewById(R.id.constraintLayout));
+                        Toast.makeText(ProductAddActivity.this, "Successfully added product", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
             }
@@ -86,7 +91,7 @@ public class ProductAddActivity extends AppCompatActivity {
         this.logOut();
     }
 
-    //returns to login screen and empties credentials
+    //returns to login screen and empties c
     private void logOut() {
         SharedPreferences sharedPreferences = getSharedPreferences("PREFS", MODE_PRIVATE);
 
