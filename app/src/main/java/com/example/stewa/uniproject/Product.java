@@ -4,13 +4,13 @@ public class Product {
 
     private String name;
     private String description;
+    private double weight;
     private double itemCost;
     private int stock;
-    private double weight;
     private String producer;
 
 
-    public Product(String name, String description, double itemCost, int stock, double weight, String producer){
+    public Product(String name, String description, double weight, double itemCost, int stock, String producer){
         this.name = name;
         this.description = description;
         this.itemCost = itemCost;

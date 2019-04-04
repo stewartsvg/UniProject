@@ -74,7 +74,7 @@ public class OrderProductActivity extends AppCompatActivity {
                 String productListItemValue = (String) orderProductListView.getItemAtPosition(position);
                 String[] productListItemValueArray = productListItemValue.split("\n");
                 String productListItemValueID = productListItemValueArray[0];
-                //goToOrderConfirmation(productListItemValueID);
+                goToOrderConfirmation(productListItemValueID);
             }
         });
 
@@ -108,14 +108,14 @@ public class OrderProductActivity extends AppCompatActivity {
         this.logOut();
     }
 
-//    private void goToOrderConfirmation(String productListItemValueID){
-//        Intent goToOrderConfirmationScreen = new Intent(OrderProductActivity.this, OrderConfirmationActivity.class);
-//        String productID = productListItemValueID;
-//        Bundle bundle = new Bundle();
-//        bundle.putString("productDetails", productID);
-//        goToOrderConfirmationScreen.putExtras(bundle);
-//        startActivity(goToOrderConfirmationScreen);
-//    }
+    private void goToOrderConfirmation(String productListItemValueID){
+        Intent goToOrderConfirmationScreen = new Intent(OrderProductActivity.this, OrderConfirmationActivity.class);
+        String productID = productListItemValueID;
+        Bundle bundle = new Bundle();
+        bundle.putString("productID", productID);
+        goToOrderConfirmationScreen.putExtras(bundle);
+        startActivity(goToOrderConfirmationScreen);
+    }
 
     //returns to login screen and empties credentials
     private void logOut() {

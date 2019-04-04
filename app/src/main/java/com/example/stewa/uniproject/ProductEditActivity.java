@@ -73,16 +73,22 @@ public class ProductEditActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 //checks is any text fields are empty
-                if (isFieldEmpty(etProductName.getText()) || isFieldEmpty(etProductDescription.getText()) || isFieldEmpty(etProductItemCost.getText()) || isFieldEmpty(etProductWeight.getText()) || isFieldEmpty(etProductStock.getText())) {
+                if (isFieldEmpty(etProductName.getText()) ||
+                        isFieldEmpty(etProductDescription.getText()) ||
+                        isFieldEmpty(etProductItemCost.getText()) ||
+                        isFieldEmpty(etProductWeight.getText()) ||
+                        isFieldEmpty(etProductStock.getText())) {
 
                     emptyFieldsError.setVisibility(View.VISIBLE);
                 } else {
+                    //updates product with new details
                     emptyFieldsError.setVisibility(View.INVISIBLE);
                     Product updatedProduct = new Product(etProductName.getText().toString(),
                             etProductDescription.getText().toString(),
+                            Double.parseDouble(etProductWeight.getText().toString()),
                             Double.parseDouble(etProductItemCost.getText().toString()),
                             Integer.parseInt(etProductStock.getText().toString()),
-                            Double.parseDouble(etProductWeight.getText().toString()), null);
+                             null);
 
                     if (dbHelper.updateProductInDatabase(updatedProduct, productID)) {
                         Toast.makeText(ProductEditActivity.this, "Successfully updated product", Toast.LENGTH_SHORT).show();

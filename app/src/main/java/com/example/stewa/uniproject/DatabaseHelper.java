@@ -78,11 +78,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getAllUnownedProducts(String currentUser) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String fullProductQuery = "SELECT * FROM " + productTableName +
+        String productQuery = "SELECT * FROM " + productTableName +
                 " WHERE "+productProducerName + " != '" + currentUser + "'";
 
-        Cursor result = db.rawQuery(fullProductQuery, null);
+        Cursor result = db.rawQuery(productQuery, null);
         return result;
+    }
+
+    //returns a product object based on the productID selected in the database
+    public Product getProductByID(String selectedProductID){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String productQuery = "SELECT * FROM " + productTableName + " WHERE "+ productID+ " = "+Integer.parseInt(selectedProductID);
+        Cursor result = db.rawQuery(productQuery,null);
+        result.moveToFirst();
+        Product product = new Product(result.getString(1),result.getString(2),
+                Double.parseDouble(result.getString(3)),
+                Double.parseDouble(result.getString(4)),
+                Integer.parseInt(result.getString(5)),
+                result.getString(6));
+        return product;
     }
 
     //deletes product from database by its productID

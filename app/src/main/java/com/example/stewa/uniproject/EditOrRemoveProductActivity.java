@@ -13,9 +13,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -23,7 +25,6 @@ public class EditOrRemoveProductActivity extends AppCompatActivity {
     
     private DrawerLayout drawerLayout;
     private ListView productListView;
-    //added private
     private DatabaseHelper dbHelper;
 
     @Override
@@ -44,6 +45,8 @@ public class EditOrRemoveProductActivity extends AppCompatActivity {
             }
         });
 
+        final TextView tvNoProductsAdded = (TextView) findViewById(R.id.tv_no_products_added);
+        final Button btnNoProductsAdded = (Button) findViewById(R.id.btn_no_products_added);
         SharedPreferences sharedPreferences = getSharedPreferences("PREFS", MODE_PRIVATE);
         final String currentUserCredentials = sharedPreferences.getString("credentials", null);
         final String currentUser = getCurrentUserNameFromSharedPrefs(currentUserCredentials);
@@ -53,10 +56,24 @@ public class EditOrRemoveProductActivity extends AppCompatActivity {
         dbHelper = new DatabaseHelper(EditOrRemoveProductActivity.this);
         Cursor productResults = dbHelper.getProductsForCurrentUser(currentUser);
 
+        //if no products are added, show a message and button that takes the user to
+        //the product add page
         if (productResults.getCount() == 0) {
-            displayNoProductsFoundError("You have not added any products, or a database " +
-                    "error has occurred.", "No Products Added");
+            tvNoProductsAdded.setVisibility(View.VISIBLE);
+            btnNoProductsAdded.setVisibility(View.VISIBLE);
+            btnNoProductsAdded.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent goToAddProductScreen = new Intent(EditOrRemoveProductActivity.this, ProductAddActivity.class);
+                    startActivity(goToAddProductScreen);
+                    finish();
+                }
+            });
+            //else show a listview of all the products added by the current user and hide the
+            //button and message that ask the user to add a new product
         } else {
+            tvNoProductsAdded.setVisibility(View.INVISIBLE);
+            btnNoProductsAdded.setVisibility(View.INVISIBLE);
             while (productResults.moveToNext()) {
                 productList.add(productResults.getString(0) + "\n" + productResults.getString(1) + "\n" + productResults.getString(2) + "\n" +
                         productResults.getString(3) + "\n" + productResults.getString(4) + "\n" +
@@ -131,13 +148,5 @@ public class EditOrRemoveProductActivity extends AppCompatActivity {
             System.out.println("producer name: " + currentUserName);
             return currentUserName;
         }
-    }
-
-    //this should be displayed if there are no products added by the currently logged in user
-    private void displayNoProductsFoundError(String errorMessage, String errorName) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setMessage(errorMessage);
-        alertDialogBuilder.setTitle(errorName);
-        alertDialogBuilder.setCancelable(true);
     }
 }

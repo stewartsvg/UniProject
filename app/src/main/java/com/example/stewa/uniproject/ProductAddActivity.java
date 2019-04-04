@@ -68,7 +68,7 @@ public class ProductAddActivity extends AppCompatActivity {
                     int productStock = Integer.parseInt(etProductStock.getText().toString());
                     double productWeight = Double.parseDouble(etProductWeight.getText().toString());
                     String producer = getProducerNameFromSharedPrefs(currentUserCredentials);
-                    Product newProduct = new Product(productName, productDescription, productItemCost, productStock, productWeight, producer);
+                    Product newProduct = new Product(productName, productDescription, productWeight, productItemCost, productStock, producer);
                     DatabaseHelper dbhelper = new DatabaseHelper(ProductAddActivity.this);
 
                     if(dbhelper.addProductToDatabase(newProduct)){
