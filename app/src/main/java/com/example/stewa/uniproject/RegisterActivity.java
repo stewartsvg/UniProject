@@ -11,18 +11,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class Register extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.register_address);
+        setContentView(R.layout.activity_register);
 
-        final EditText newName = (EditText) findViewById(R.id.etNewName);
-        final EditText walletAddress = (EditText) findViewById(R.id.etWalletAddress);
-        final EditText newPassword = (EditText) findViewById(R.id.etNewPassword);
-        final EditText confirmedPassword = (EditText) findViewById(R.id.etConfirmPassword);
-        Button confirmRegistrationButton = (Button) findViewById(R.id.btnRegisterCreate);
+        final EditText newName = (EditText) findViewById(R.id.et_new_name);
+        final EditText walletAddress = (EditText) findViewById(R.id.et_wallet_address);
+        final EditText walletPrivateKey = (EditText) findViewById(R.id.et_wallet_private_key);
+        final EditText newPassword = (EditText) findViewById(R.id.et_new_password);
+        final EditText confirmedPassword = (EditText) findViewById(R.id.et_confirm_password);
+        Button confirmRegistrationButton = (Button) findViewById(R.id.btn_register_create);
 
         confirmRegistrationButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -31,24 +32,26 @@ public class Register extends AppCompatActivity {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 String newUsername = newName.getText().toString();
                 String walletAddressString = walletAddress.getText().toString();
+                String walletPrivateKeyString = walletAddress.getText().toString();
                 String newPasswordString = newPassword.getText().toString();
                 String confirmedPasswordString = confirmedPassword.getText().toString();
 
                 //checks is any text fields are empty
-                if (isFieldEmpty(newName.getText())||isFieldEmpty(walletAddress.getText())||isFieldEmpty(newPassword.getText())){
-                    TextView emptyFieldsError = findViewById(R.id.tvEmptyFieldsError);
+                if (isFieldEmpty(newName.getText())||isFieldEmpty(walletAddress.getText())||isFieldEmpty(newPassword.getText())
+                ||isFieldEmpty(walletPrivateKey.getText())){
+                    TextView emptyFieldsError = findViewById(R.id.tv_empty_register_fields_error);
                     emptyFieldsError.setVisibility(View.VISIBLE);
                 }else{
 
                     if (passwordsMatch(newPasswordString,confirmedPasswordString)){
-                        editor.putString(newUsername+newPasswordString+"data",newUsername+"\n"+walletAddressString);
+                        editor.putString(newUsername+newPasswordString,newUsername+"\n"+walletAddressString+"\n"+walletPrivateKeyString);
                         editor.commit();
 
-                        Intent goToLogin = new Intent(Register.this,LoginActivity.class);
+                        Intent goToLogin = new Intent(RegisterActivity.this,LoginActivity.class);
                         startActivity(goToLogin);
                         finish();
                     }else{
-                       TextView passwordMatchError = findViewById(R.id.tvPasswordMatchError);
+                       TextView passwordMatchError = findViewById(R.id.tv_passwords_match_error);
                        passwordMatchError.setVisibility(View.VISIBLE);
                     }
                  }

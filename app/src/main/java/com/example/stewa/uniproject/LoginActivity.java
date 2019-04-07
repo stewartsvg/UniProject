@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -37,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
                     //gets the data value for the key of entered username+password, if there is no
                     //data value for this key, it is set to "Invalid Login"
                     emptyLoginFieldsError.setVisibility(View.INVISIBLE);
-                    String userDetails = sharedPreferences.getString(usernameString + passwordString + "data", "Invalid Login");
+                    String userDetails = sharedPreferences.getString(usernameString + passwordString, "Invalid Login");
                     //if Invalid Login is the value stored for this key, it presents error text
                     if(userDetails.equals("Invalid Login")){
                         TextView invalidLoginError = findViewById(R.id.tv_invalid_login_error);
@@ -48,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
                     //credentials are set to this.
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("credentials", userDetails);
+                    editor.putString(usernameString+"walletAddress",getWalletAddressFromUserDetails(userDetails));
                     editor.commit();
 
                     Intent goToHomeScreen = new Intent(LoginActivity.this, HomeActivity.class);
@@ -60,9 +60,15 @@ public class LoginActivity extends AppCompatActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent goToRegistration = new Intent(LoginActivity.this,Register.class);
+                Intent goToRegistration = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(goToRegistration);
             }
         });
+    }
+
+    private String getWalletAddressFromUserDetails(String userDetails){
+        String[] userDetailsStringArray = userDetails.split("\n");
+        String walletAddress = userDetailsStringArray[1];
+        return walletAddress;
     }
 }

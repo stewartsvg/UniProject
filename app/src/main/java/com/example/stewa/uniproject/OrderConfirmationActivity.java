@@ -1,7 +1,9 @@
 package com.example.stewa.uniproject;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +13,7 @@ import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -20,6 +23,7 @@ public class OrderConfirmationActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private DatabaseHelper productDBHelper;
     private Double transactionTotal;
+    private Double weightTotal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +60,7 @@ public class OrderConfirmationActivity extends AppCompatActivity {
         final TextView tvProductStock = (TextView) findViewById(R.id.tv_order_product_current_stock);
         final TextView tvProductProducerName = (TextView) findViewById(R.id.tv_order_product_producer_name);
         final EditText etQuantity = (EditText) findViewById(R.id.et_order_product_quantity);
+        final Button btnOrderProduct = (Button) findViewById(R.id.btn_product_order_confirm);
 
         //populates textviews with fields of previously selected productID
         tvProductName.setText("Name: " + selectedProduct.getName());
@@ -64,6 +69,16 @@ public class OrderConfirmationActivity extends AppCompatActivity {
         tvProductCost.setText("Cost per Item (in Ether): " + Double.toString(selectedProduct.getItemCost()));
         tvProductStock.setText("Stock Remaining: " + Integer.toString(selectedProduct.getStock()));
         tvProductProducerName.setText("Sold by: " + selectedProduct.getProducer());
+
+        SharedPreferences sharedPreferences = getSharedPreferences("PREFS",MODE_PRIVATE);
+        String currentUserDetails = sharedPreferences.getString("credentials","error getting credentials");
+        String[] currentUserDetailsArray = currentUserDetails.split("\n");
+        String buyer = currentUserDetailsArray[0];
+        final String buyerWalletAddress = currentUserDetailsArray[1];
+        final String buyerWalletPrivateKey = currentUserDetailsArray[2];
+
+        String seller = selectedProduct.getProducer();
+        final String sellerWalletAddress = sharedPreferences.getString(seller+"walletAddress","error getting seller wallet address");
 
         etQuantity.addTextChangedListener(new TextWatcher() {
             @Override
@@ -76,7 +91,8 @@ public class OrderConfirmationActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 tvTotalTransactionCost.setVisibility(View.VISIBLE);
                 if (!etQuantity.getText().toString().equals("")) {
-                    transactionTotal = Integer.parseInt(etQuantity.getText().toString()) * selectedProduct.getItemCost();
+                    transactionTotal = Double.parseDouble(etQuantity.getText().toString()) * selectedProduct.getItemCost();
+                    weightTotal = Double.parseDouble(etQuantity.getText().toString()) * selectedProduct.getWeight();
                     String transactionTotalString = "Total: " + transactionTotal.toString();
                     tvTotalTransactionCost.setText(transactionTotalString);
                 } else {
@@ -91,12 +107,37 @@ public class OrderConfirmationActivity extends AppCompatActivity {
                 tvTotalTransactionCost.setVisibility(View.VISIBLE);
                 if (!etQuantity.getText().toString().equals("")) {
                     transactionTotal = Integer.parseInt(etQuantity.getText().toString()) * selectedProduct.getItemCost();
+                    weightTotal = Double.parseDouble(etQuantity.getText().toString()) * selectedProduct.getWeight();
                     String transactionTotalString = "Total: " + transactionTotal.toString()+" Ether";
                     tvTotalTransactionCost.setText(transactionTotalString);
                 } else {
                     String emptyQuantityTotal = "Please Enter a Quantity";
                     tvTotalTransactionCost.setText(emptyQuantityTotal);
                 }
+            }
+        });
+
+        btnOrderProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AsyncTask asyncTask = new AsyncTask() {
+                                        @SuppressLint("WrongThread")
+                                        @Override
+                    protected Object doInBackground(Object[] objects) {
+                        TransactionDetails transactionDetails = new TransactionDetails(buyerWalletAddress,
+                        buyerWalletPrivateKey,sellerWalletAddress,tvProductName.getText().toString(),weightTotal,transactionTotal);
+                        EthereumTransactionMaker ethereumTransactionMaker = new EthereumTransactionMaker(transactionDetails);
+                        ethereumTransactionMaker.successfulTransaction();
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Object o){
+                        //after code goes here
+                    }
+                }.execute();
+
+
             }
         });
     }

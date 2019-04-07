@@ -12,10 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".OrderConfirmationActivity"></activity>
-        <activity android:name=".OrderProductActivity" />
-        <activity android:name=".ProductEditActivity" />
-        <activity android:name=".EditOrRemoveProductActivity" />
+        <activity android:name=".OrderConfirmationActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".OrderProductActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ProductEditActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".EditOrRemoveProductActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ProductAddActivity"
             android:screenOrientation="portrait" />
@@ -32,13 +36,7 @@
             android:name=".HomeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Register"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Display"
+            android:name=".RegisterActivity"
             android:screenOrientation="portrait" />
 
         <meta-data

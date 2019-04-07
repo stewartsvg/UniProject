@@ -1,6 +1,8 @@
 package com.example.stewa.uniproject;
 
 /** web3j android framework source available from <a href="https://github.com/web3j/web3j/tree/android"></a>*/
+import android.os.AsyncTask;
+
 import com.example.stewa.uniproject.contracts.UserAddressBook;
 
 import org.web3j.crypto.CipherException;
@@ -21,7 +23,15 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 //makes synchronous requests
-public class EthereumRequest {
+public class EthereumTransactionMaker {
+
+    TransactionDetails transactionDetails;
+
+    public EthereumTransactionMaker(TransactionDetails transactionDetails){
+        this.transactionDetails = transactionDetails;
+    }
+
+
 
     //address of the ganache test server, hosted on the wifi-address of mobile hotspot
     private final static String GANACHE_ADDRESS = "http://192.168.43.231:8545";
@@ -60,21 +70,51 @@ public class EthereumRequest {
             return "Error getting client version";
         }
     }
-    //sends the transactionValue quantity of Ether from Address 1 to Address 2 and returns the
-    //transaction hash as a string
-    public String executeAddress1toAddress2Transaction(double transactionValue){
+
+    //returns true is successful transaction is completed
+    public boolean successfulTransaction(){
+        String transactionHashString = executeTransactionBetweenBuyerAndSeller();
+        if(!transactionHashString.equals("Error completing transaction")){
+            return true;
+        }else return false;
+    }
+
+    //sends the transactionValue quantity of Ether from sender's wallet to receiver's wallet
+    //and returns the transaction hash as a string
+    public String executeTransactionBetweenBuyerAndSeller(){
     try {
-        TransactionManager address1TransactionManager = prepareTransaction(ADDRESS_1_PRIVATE_KEY);
-        TransactionReceipt transactionReceipt = executeTransaction(address1TransactionManager,ADDRESS_2,transactionValue);
+        TransactionManager senderTransactionManager = prepareTransaction(transactionDetails.getSenderPrivateKey());
+        TransactionReceipt transactionReceipt = executeTransaction(senderTransactionManager,transactionDetails.getReceiverWalletAddress(),transactionDetails.getTransactionValueTotal());
         String transactionHash = transactionReceipt.getTransactionHash();
 
         System.out.println("Transaction Hash = "+ transactionHash);
-        return  "Transaction successful: "+transactionValue+" Ether sent\n" +
+        return  "Transaction successful: "+transactionDetails.getTransactionValueTotal()+
+                " Ether sent from "+transactionDetails.getSenderWalletAddress()+
+                " to "+transactionDetails.getReceiverWalletAddress()+"\n" +
                 "Transaction Hash: "+transactionHash;
     }catch (Exception e){
         e.printStackTrace();
     }return "Error completing transaction";
     }
+
+    //adds addresses to User, addresses hardcoded for purposes of the demonstration, then outputs from
+    //the data created on the blockchain by the contract
+    public String addTransactionDetailsToTransactionHash(String transactionReceiptHash){
+        try {
+//            ProductOrderDetailsContract productOrderDetailsContract = getUserAddressBookFromCredentials(getPrivateKeyCredentials(transactionDetails.getSenderPrivateKey()));
+//            productOrderDetailsContract.addProductOrderDetails(transactionReceiptHash, productOrderDetailsString).sendAsync().get();
+//
+//            for(Object productOrderDetails : userAddressBook.getUserAddresses().sendAsync().get()){
+//                String userAddressString = userAddress.toString();
+//                String userName = userAddressBook.getUserName(userAddressString).sendAsync().get();
+//                System.out.println("Address : "+userAddressString+" Username : "+userName);
+//            }
+            return "Successfully added users";
+        }catch (Exception e){
+            e.printStackTrace();
+        }return "Error adding users to address book";
+    }
+
 
     //adds addresses to User, addresses hardcoded for purposes of the demonstration, then outputs from
     //the data created on the blockchain by the contract
@@ -186,4 +226,14 @@ public class EthereumRequest {
         contractIsLoaded = true;
         return CONTRACT_ADDRESS;
     }
+
+    private class EthereumNetworkTask extends AsyncTask<Void,Void,Void>{
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Web3j web3jInstance = Web3jFactory.build(new HttpService(GANACHE_ADDRESS));
+            return null;
+        }
+    }
+
 }

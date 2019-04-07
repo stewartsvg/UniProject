@@ -75,11 +75,8 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 goToOrderProductScreen();
-
             }
         });
-
-
     }
 
     public void navBarHome(MenuItem menuItem){
