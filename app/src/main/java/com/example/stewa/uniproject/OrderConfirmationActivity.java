@@ -13,10 +13,14 @@ import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
 
 public class OrderConfirmationActivity extends AppCompatActivity {
 
@@ -24,6 +28,9 @@ public class OrderConfirmationActivity extends AppCompatActivity {
     private DatabaseHelper productDBHelper;
     private Double transactionTotal;
     private Double weightTotal;
+    private String transactionHash;
+    private String timestamp;
+    private TransactionDetails transactionDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,11 +80,11 @@ public class OrderConfirmationActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("PREFS",MODE_PRIVATE);
         String currentUserDetails = sharedPreferences.getString("credentials","error getting credentials");
         String[] currentUserDetailsArray = currentUserDetails.split("\n");
-        String buyer = currentUserDetailsArray[0];
+        final String buyer = currentUserDetailsArray[0];
         final String buyerWalletAddress = currentUserDetailsArray[1];
         final String buyerWalletPrivateKey = currentUserDetailsArray[2];
 
-        String seller = selectedProduct.getProducer();
+        final String seller = selectedProduct.getProducer();
         final String sellerWalletAddress = sharedPreferences.getString(seller+"walletAddress","error getting seller wallet address");
 
         etQuantity.addTextChangedListener(new TextWatcher() {
@@ -117,43 +124,82 @@ public class OrderConfirmationActivity extends AppCompatActivity {
             }
         });
 
+        //creates a transaction on the blockchain with the details on the order
         btnOrderProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AsyncTask asyncTask = new AsyncTask() {
+                 AsyncTask asyncTask = new AsyncTask() {
                                         @SuppressLint("WrongThread")
                                         @Override
                     protected Object doInBackground(Object[] objects) {
-                        TransactionDetails transactionDetails = new TransactionDetails(buyerWalletAddress,
-                        buyerWalletPrivateKey,sellerWalletAddress,tvProductName.getText().toString(),weightTotal,transactionTotal);
+                        transactionDetails = new TransactionDetails(buyerWalletAddress,
+                        buyerWalletPrivateKey,sellerWalletAddress,selectedProduct.getName(),weightTotal,transactionTotal);
                         EthereumTransactionMaker ethereumTransactionMaker = new EthereumTransactionMaker(transactionDetails);
-                        ethereumTransactionMaker.successfulTransaction();
+                        if(ethereumTransactionMaker.successfulTransaction()){
+                            transactionHash = ethereumTransactionMaker.getTransactionHash();
+                            timestamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new java.util.Date());
+                        }
                         return null;
                     }
 
                     @Override
                     protected void onPostExecute(Object o){
-                        //after code goes here
+                        OrderDatabaseHelper orderDBHelper = new OrderDatabaseHelper(OrderConfirmationActivity.this);
+                        if(orderDBHelper.addOrderToDatabase(transactionDetails,timestamp,transactionHash,buyer,seller)){
+                            Toast.makeText(OrderConfirmationActivity.this, "Successfully ordered product", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(OrderConfirmationActivity.this, "Error ordering product", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }.execute();
-
-
             }
         });
     }
 
-    public void navBarHome(MenuItem menuItem) {
-        Intent goToHomeScreen = new Intent(OrderConfirmationActivity.this, HomeActivity.class);
+    //nav bar buttons
+    //home nav bar button
+    public void navBarHome(MenuItem menuItem){
+        Intent goToHomeScreen = new Intent(OrderConfirmationActivity.this,HomeActivity.class);
         startActivity(goToHomeScreen);
         finish();
     }
 
-    public void navBarLogOut(MenuItem menuItem) {
-        this.logOut();
+    //order produce nav bar button
+    public void navBarOrderProduce(MenuItem menuItem){
+        Intent goToOrderProduceScreen = new Intent(OrderConfirmationActivity.this,OrderProductActivity.class);
+        startActivity(goToOrderProduceScreen);
+        finish();
     }
 
-    //returns to login screen and empties credentials
-    private void logOut() {
+    //view orders nav bar button
+    public void navBarViewOrders(MenuItem menuItem){
+        Intent goToViewOrdersScreen = new Intent(OrderConfirmationActivity.this,OrderHistoryActivity.class);
+        startActivity(goToViewOrdersScreen);
+        finish();
+    }
+
+    //add product nav bar button
+    public void navBarAddProduct(MenuItem menuItem){
+        Intent goToAddProductScreen = new Intent(OrderConfirmationActivity.this, ProductAddActivity.class);
+        startActivity(goToAddProductScreen);
+    }
+
+    //edit or remove product nav bar button
+    public void navBarEditRemoveProduct(MenuItem menuItem){
+        Intent goToEditRemoveProductScreen = new Intent(OrderConfirmationActivity.this,EditOrRemoveProductActivity.class);
+        startActivity(goToEditRemoveProductScreen);
+        finish();
+    }
+
+    //view sales nav bar button
+    public void navBarViewSales(MenuItem menuItem){
+        Intent goToViewSalesScreen = new Intent(OrderConfirmationActivity.this,SalesHistoryActivity.class);
+        startActivity(goToViewSalesScreen);
+        finish();
+    }
+
+    //logout nav bar button
+    public void navBarLogOut(MenuItem menuItem){
         SharedPreferences sharedPreferences = getSharedPreferences("PREFS", MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();

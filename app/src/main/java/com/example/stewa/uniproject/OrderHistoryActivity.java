@@ -18,21 +18,21 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class OrderProductActivity extends AppCompatActivity {
+public class OrderHistoryActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
-    private ListView orderProductListView;
-    private DatabaseHelper dbHelper;
+    private ListView orderHistoryListView;
+    private OrderDatabaseHelper orderdbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order_product);
+        setContentView(R.layout.activity_order_history);
 
         //opens up navigation menu by clicking on white menu icon
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        ImageButton navBarMenuButton = (ImageButton) findViewById(R.id.btn_order_product_drawer_menu);
+        ImageButton navBarMenuButton = (ImageButton) findViewById(R.id.btn_order_history_drawer_menu);
         navBarMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -48,42 +48,29 @@ public class OrderProductActivity extends AppCompatActivity {
         final String currentUserCredentials = sharedPreferences.getString("credentials", null);
         String currentUser = getCurrentUserNameFromSharedPrefs(currentUserCredentials);
 
-        orderProductListView = (ListView) findViewById(R.id.order_product_list_view);
+        orderHistoryListView = (ListView) findViewById(R.id.order_history_list_view);
         ArrayList<String> orderProductList = new ArrayList<>();
-        dbHelper = new DatabaseHelper(OrderProductActivity.this);
-        Cursor orderProductResults = dbHelper.getAllUnownedProducts(currentUser);
+        orderdbHelper = new OrderDatabaseHelper(OrderHistoryActivity.this);
+        Cursor orderHistoryResults = orderdbHelper.getOrderedProductsForCurrentUser(currentUser);
 
-        if (orderProductResults.getCount() == 0) {
-            displayNoProductsFoundError("There are no products available, or a database " +
-                    "error has occurred.", "No Products Added");
+        if (orderHistoryResults.getCount() == 0) {
+            displayNoHistoryFoundError("You have not ordered any products, or a database " +
+                    "error has occurred.", "No Products Ordered");
         } else {
-            while (orderProductResults.moveToNext()) {
-                orderProductList.add(orderProductResults.getString(0) + "\n" +
-                        "Product Name: "+orderProductResults.getString(1) + "\n" +
-                        "Cost(ETH): "+orderProductResults.getString(4) + "\n");
-                ListAdapter productListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, orderProductList);
-                orderProductListView.setAdapter(productListAdapter);
+            while (orderHistoryResults.moveToNext()) {
+                orderProductList.add("Transaction Hash: "+orderHistoryResults.getString(0) + "\n" +
+                        "Product Name: "+orderHistoryResults.getString(1) + "\n" +
+                        "Total Value: "+orderHistoryResults.getString(3)+" Ether" + "\n" +
+                        "Total Weight: "+orderHistoryResults.getString(2)+" kg" + "\n" +
+                        "Seller: "+orderHistoryResults.getString(7) + "\n" +
+                        "Timestamp: "+orderHistoryResults.getString(4) + "\n");
+                ListAdapter OrderListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, orderProductList);
+                orderHistoryListView.setAdapter(OrderListAdapter);
             }
         }
-
-        //opens the order confirmation page for the selected product by passing its product ID
-        //to be used in a SQL select statement in the OrderConfirmationActivity class
-        orderProductListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String productListItemValue = (String) orderProductListView.getItemAtPosition(position);
-                String[] productListItemValueArray = productListItemValue.split("\n");
-                String productListItemValueID = productListItemValueArray[0];
-                goToOrderConfirmation(productListItemValueID);
-            }
-        });
-
-
-
     }
 
-    //looks through shared preferences to get username of current user, so that only products not
-    //added by the current user are displayed
+    //looks through shared preferences to get username of current user
     private String getCurrentUserNameFromSharedPrefs(String currentUserDetails) {
 
         System.out.println(currentUserDetails);
@@ -101,41 +88,41 @@ public class OrderProductActivity extends AppCompatActivity {
     //nav bar buttons
     //home nav bar button
     public void navBarHome(MenuItem menuItem){
-        Intent goToHomeScreen = new Intent(OrderProductActivity.this,HomeActivity.class);
+        Intent goToHomeScreen = new Intent(OrderHistoryActivity.this,HomeActivity.class);
         startActivity(goToHomeScreen);
         finish();
     }
 
     //order produce nav bar button
     public void navBarOrderProduce(MenuItem menuItem){
-        Intent goToOrderProduceScreen = new Intent(OrderProductActivity.this,OrderProductActivity.class);
+        Intent goToOrderProduceScreen = new Intent(OrderHistoryActivity.this,OrderProductActivity.class);
         startActivity(goToOrderProduceScreen);
         finish();
     }
 
     //view orders nav bar button
     public void navBarViewOrders(MenuItem menuItem){
-        Intent goToViewOrdersScreen = new Intent(OrderProductActivity.this,OrderHistoryActivity.class);
+        Intent goToViewOrdersScreen = new Intent(OrderHistoryActivity.this,OrderHistoryActivity.class);
         startActivity(goToViewOrdersScreen);
         finish();
     }
 
     //add product nav bar button
     public void navBarAddProduct(MenuItem menuItem){
-        Intent goToAddProductScreen = new Intent(OrderProductActivity.this, ProductAddActivity.class);
+        Intent goToAddProductScreen = new Intent(OrderHistoryActivity.this, ProductAddActivity.class);
         startActivity(goToAddProductScreen);
     }
 
     //edit or remove product nav bar button
     public void navBarEditRemoveProduct(MenuItem menuItem){
-        Intent goToEditRemoveProductScreen = new Intent(OrderProductActivity.this,EditOrRemoveProductActivity.class);
+        Intent goToEditRemoveProductScreen = new Intent(OrderHistoryActivity.this,EditOrRemoveProductActivity.class);
         startActivity(goToEditRemoveProductScreen);
         finish();
     }
 
     //view sales nav bar button
     public void navBarViewSales(MenuItem menuItem){
-        Intent goToViewSalesScreen = new Intent(OrderProductActivity.this,SalesHistoryActivity.class);
+        Intent goToViewSalesScreen = new Intent(OrderHistoryActivity.this,SalesHistoryActivity.class);
         startActivity(goToViewSalesScreen);
         finish();
     }
@@ -149,23 +136,13 @@ public class OrderProductActivity extends AppCompatActivity {
         editor.putString("credentials", "");
         editor.commit();
 
-        Intent goToLoginScreen = new Intent(OrderProductActivity.this, LoginActivity.class);
+        Intent goToLoginScreen = new Intent(OrderHistoryActivity.this, LoginActivity.class);
         startActivity(goToLoginScreen);
         finish();
     }
 
-    private void goToOrderConfirmation(String productListItemValueID){
-        Intent goToOrderConfirmationScreen = new Intent(OrderProductActivity.this, OrderConfirmationActivity.class);
-        String productID = productListItemValueID;
-        Bundle bundle = new Bundle();
-        bundle.putString("productID", productID);
-        goToOrderConfirmationScreen.putExtras(bundle);
-        startActivity(goToOrderConfirmationScreen);
-    }
-
-
-    //this should be displayed if there are no products added by the currently logged in user
-    private void displayNoProductsFoundError(String errorMessage, String errorName) {
+    //this should be displayed if no products have been ordered by the currently logged in user
+    private void displayNoHistoryFoundError(String errorMessage, String errorName) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage(errorMessage);
         alertDialogBuilder.setTitle(errorName);

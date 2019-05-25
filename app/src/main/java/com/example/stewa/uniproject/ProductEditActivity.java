@@ -114,18 +114,50 @@ public class ProductEditActivity extends AppCompatActivity {
         });
     }
 
-    public void navBarHome(MenuItem menuItem) {
-        Intent goToHomeScreen = new Intent(ProductEditActivity.this, HomeActivity.class);
+    //nav bar buttons
+    //home nav bar button
+    public void navBarHome(MenuItem menuItem){
+        Intent goToHomeScreen = new Intent(ProductEditActivity.this,HomeActivity.class);
         startActivity(goToHomeScreen);
         finish();
     }
 
-    public void navBarLogOut(MenuItem menuItem) {
-        this.logOut();
+    //order produce nav bar button
+    public void navBarOrderProduce(MenuItem menuItem){
+        Intent goToOrderProduceScreen = new Intent(ProductEditActivity.this,OrderProductActivity.class);
+        startActivity(goToOrderProduceScreen);
+        finish();
     }
 
-    //returns to login screen and empties c
-    private void logOut() {
+    //view orders nav bar button
+    public void navBarViewOrders(MenuItem menuItem){
+        Intent goToViewOrdersScreen = new Intent(ProductEditActivity.this,OrderHistoryActivity.class);
+        startActivity(goToViewOrdersScreen);
+        finish();
+    }
+
+    //add product nav bar button
+    public void navBarAddProduct(MenuItem menuItem){
+        Intent goToAddProductScreen = new Intent(ProductEditActivity.this, ProductAddActivity.class);
+        startActivity(goToAddProductScreen);
+    }
+
+    //edit or remove product nav bar button
+    public void navBarEditRemoveProduct(MenuItem menuItem){
+        Intent goToEditRemoveProductScreen = new Intent(ProductEditActivity.this,EditOrRemoveProductActivity.class);
+        startActivity(goToEditRemoveProductScreen);
+        finish();
+    }
+
+    //view sales nav bar button
+    public void navBarViewSales(MenuItem menuItem){
+        Intent goToViewSalesScreen = new Intent(ProductEditActivity.this,SalesHistoryActivity.class);
+        startActivity(goToViewSalesScreen);
+        finish();
+    }
+
+    //logout nav bar button
+    public void navBarLogOut(MenuItem menuItem){
         SharedPreferences sharedPreferences = getSharedPreferences("PREFS", MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();

@@ -17,10 +17,12 @@
         <menu>
         <item android:id="@+id/nav_products"
             android:icon="@drawable/ic_buy_product"
-            android:title="Order Produce" />
+            android:title="Order Produce"
+            android:onClick="navBarOrderProduce"/>
         <item android:id="@+id/nav_supplier_transactions"
             android:icon="@drawable/ic_view_list"
-            android:title="View Orders"/>
+            android:title="View Orders"
+            android:onClick="navBarViewOrders"/>
         </menu>
     </item>
 
@@ -28,13 +30,16 @@
         <menu>
         <item android:id="@+id/add_new_product"
             android:icon="@drawable/ic_add"
-            android:title="Add a New Product" />
+            android:title="Add a New Product"
+            android:onClick="navBarAddProduct"/>
         <item android:id="@+id/edit_products"
             android:icon="@drawable/ic_edit"
-            android:title="Edit or Remove Products" />
+            android:title="Edit or Remove Products"
+            android:onClick="navBarEditRemoveProduct"/>
         <item android:id="@+id/nav_producer_transactions"
             android:icon="@drawable/ic_view_list"
-            android:title="View Transactions"/>
+            android:title="View Sales"
+            android:onClick="navBarViewSales"/>
         </menu>
     </item>
 

@@ -31,8 +31,6 @@ public class EthereumTransactionMaker {
         this.transactionDetails = transactionDetails;
     }
 
-
-
     //address of the ganache test server, hosted on the wifi-address of mobile hotspot
     private final static String GANACHE_ADDRESS = "http://192.168.43.231:8545";
 
@@ -44,6 +42,8 @@ public class EthereumTransactionMaker {
     private final static String ADDRESS_2_PRIVATE_KEY = "fe95d8bee9ecc51ba648f9bfcceecbce03d47f15ffab25922328e9348cfc99a7";
     private final static String ADDRESS_3 = "0x4Ff3847eD1511F69ce20e3b09c626871D0FEaEa1";
     private final static String ADDRESS_3_PRIVATE_KEY = "37a70f9c305dc666c4f9a77eaa97da6803a9fe1912e32b3570c4480b5508f131";
+
+    private String transactionHash = null;
 
     private static String CONTRACT_ADDRESS;
     private boolean contractIsLoaded = false;
@@ -71,10 +71,14 @@ public class EthereumTransactionMaker {
         }
     }
 
+    public String getTransactionHash(){
+        return transactionHash;
+    }
+
     //returns true is successful transaction is completed
     public boolean successfulTransaction(){
-        String transactionHashString = executeTransactionBetweenBuyerAndSeller();
-        if(!transactionHashString.equals("Error completing transaction")){
+        transactionHash = executeTransactionBetweenBuyerAndSeller();
+        if(!transactionHash.equals("Error completing transaction")){
             return true;
         }else return false;
     }
@@ -86,12 +90,8 @@ public class EthereumTransactionMaker {
         TransactionManager senderTransactionManager = prepareTransaction(transactionDetails.getSenderPrivateKey());
         TransactionReceipt transactionReceipt = executeTransaction(senderTransactionManager,transactionDetails.getReceiverWalletAddress(),transactionDetails.getTransactionValueTotal());
         String transactionHash = transactionReceipt.getTransactionHash();
-
         System.out.println("Transaction Hash = "+ transactionHash);
-        return  "Transaction successful: "+transactionDetails.getTransactionValueTotal()+
-                " Ether sent from "+transactionDetails.getSenderWalletAddress()+
-                " to "+transactionDetails.getReceiverWalletAddress()+"\n" +
-                "Transaction Hash: "+transactionHash;
+        return  transactionHash;
     }catch (Exception e){
         e.printStackTrace();
     }return "Error completing transaction";
@@ -226,14 +226,4 @@ public class EthereumTransactionMaker {
         contractIsLoaded = true;
         return CONTRACT_ADDRESS;
     }
-
-    private class EthereumNetworkTask extends AsyncTask<Void,Void,Void>{
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            Web3j web3jInstance = Web3jFactory.build(new HttpService(GANACHE_ADDRESS));
-            return null;
-        }
-    }
-
 }

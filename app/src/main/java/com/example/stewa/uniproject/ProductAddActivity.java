@@ -21,8 +21,6 @@ import android.widget.Toast;
 public class ProductAddActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +55,8 @@ public class ProductAddActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //checks is any text fields are empty
-                if (isFieldEmpty(etProductName.getText()) || isFieldEmpty(etProductDescription.getText()) || isFieldEmpty(etProductItemCost.getText()) || isFieldEmpty(etProductWeight.getText()) || isFieldEmpty(etProductStock.getText())) {
+                if (isFieldEmpty(etProductName.getText()) || isFieldEmpty(etProductDescription.getText()) || isFieldEmpty(etProductItemCost.getText())
+                        || isFieldEmpty(etProductWeight.getText()) || isFieldEmpty(etProductStock.getText())) {
 
                     emptyFieldsError.setVisibility(View.VISIBLE);
                 } else {
@@ -81,18 +80,50 @@ public class ProductAddActivity extends AppCompatActivity {
         });
     }
 
-    public void navBarHome(MenuItem menuItem) {
-        Intent goToHomeScreen = new Intent(ProductAddActivity.this, HomeActivity.class);
+    //nav bar buttons
+    //home nav bar button
+    public void navBarHome(MenuItem menuItem){
+        Intent goToHomeScreen = new Intent(ProductAddActivity.this,HomeActivity.class);
         startActivity(goToHomeScreen);
         finish();
     }
 
-    public void navBarLogOut(MenuItem menuItem) {
-        this.logOut();
+    //order produce nav bar button
+    public void navBarOrderProduce(MenuItem menuItem){
+        Intent goToOrderProduceScreen = new Intent(ProductAddActivity.this,OrderProductActivity.class);
+        startActivity(goToOrderProduceScreen);
+        finish();
     }
 
-    //returns to login screen and empties c
-    private void logOut() {
+    //view orders nav bar button
+    public void navBarViewOrders(MenuItem menuItem){
+        Intent goToViewOrdersScreen = new Intent(ProductAddActivity.this,OrderHistoryActivity.class);
+        startActivity(goToViewOrdersScreen);
+        finish();
+    }
+
+    //add product nav bar button
+    public void navBarAddProduct(MenuItem menuItem){
+        Intent goToAddProductScreen = new Intent(ProductAddActivity.this, ProductAddActivity.class);
+        startActivity(goToAddProductScreen);
+    }
+
+    //edit or remove product nav bar button
+    public void navBarEditRemoveProduct(MenuItem menuItem){
+        Intent goToEditRemoveProductScreen = new Intent(ProductAddActivity.this,EditOrRemoveProductActivity.class);
+        startActivity(goToEditRemoveProductScreen);
+        finish();
+    }
+
+    //view sales nav bar button
+    public void navBarViewSales(MenuItem menuItem){
+        Intent goToViewSalesScreen = new Intent(ProductAddActivity.this,SalesHistoryActivity.class);
+        startActivity(goToViewSalesScreen);
+        finish();
+    }
+
+    //logout nav bar button
+    public void navBarLogOut(MenuItem menuItem){
         SharedPreferences sharedPreferences = getSharedPreferences("PREFS", MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
